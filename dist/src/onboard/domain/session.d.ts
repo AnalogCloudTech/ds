@@ -1,0 +1,30 @@
+import { Offer } from '../domain/offer';
+import { OrderNumber, SessionId, DraftId, Step, CoachingDateSelection } from './types';
+import { StepResult } from './step-result';
+import { Customer } from '@/customers/customers/domain/customer';
+import { Coach } from './coach';
+import { Webinar } from './webinar';
+import { GenerateBookStatus } from '@/onboard/generate-book/domain/generate-book-status';
+import { GuideOrderDocument } from '@/guides/orders/schemas/guide-orders.schema';
+import { SessionType } from '@/onboard/schemas/session.schema';
+export declare class Session {
+    customer: Customer;
+    draftId: DraftId;
+    order: OrderNumber;
+    currentOffer: Offer;
+    step: Step;
+    previousStep: StepResult;
+    webinar: Webinar;
+    coach: Coach;
+    book: GenerateBookStatus;
+    id: SessionId;
+    offer: Offer;
+    autoLoginToken: null;
+    hasHubspotOwnerId: boolean;
+    steps: string[];
+    guideOrdered: boolean;
+    guideOrder: GuideOrderDocument;
+    coachingSelection: CoachingDateSelection;
+    scheduleDate: string;
+    sessionType: SessionType;
+}

@@ -1,0 +1,85 @@
+import { HttpService } from '@nestjs/axios';
+import { Logger } from '@nestjs/common';
+import { HubspotService } from '../hubspot/hubspot.service';
+import { S3Service } from '@/internal/libs/aws/s3/s3.service';
+import { CallLogResponse } from './dto/callLog';
+import { RecordingCompletedDto, RecordingCompletedPayloadObjectDto, ZoomAuthTypes, ZoomCallFilter, ZoomCoachType, ZoomMeetingFilter, ZoomMemberDetails, ZoomPhoneUserDetails, ZoomRecordingObject } from './dto/recording-completed.dto';
+import { ZoomDsRepository } from './zoom.repository';
+import { ZoomRecordingDocument } from './schemas/zoom.schema';
+import { PaginatorSchematicsInterface } from '@/internal/utils/paginator';
+import { ZoomAwsSignedUrl, ZoomId } from './domain/types';
+import { SchemaId } from '@/internal/types/helpers';
+import { ZoomMemberDocument } from './schemas/zoom-member.schema';
+import { ZoomMemberRepository } from './zoom-member.repository';
+import { Axios } from 'axios';
+import { ZoomPhoneUserRepository } from './zoom-phone-user.repository';
+import { PaginatorSchemaInterface } from '@/internal/utils/paginator/paginator.schema';
+import { ZoomPhoneUserDocument } from './schemas/zoom-phone-user.schema';
+export declare class ZoomService {
+    private readonly integrationServicesUrl;
+    private readonly http;
+    private readonly zoomServerOAuthUrl;
+    private readonly basicToken;
+    private readonly zoomSecretToken;
+    private readonly apiKey;
+    private readonly apiSecret;
+    private readonly hubspotService;
+    private readonly s3Service;
+    private readonly reverseProxyUrl;
+    private readonly zoomDsRepository;
+    private readonly zoomMemberRepository;
+    private readonly zoomPhoneUserRepository;
+    private httpService;
+    private readonly logger;
+    phoneRecordingPath: string;
+    constructor(integrationServicesUrl: any, http: Axios, zoomServerOAuthUrl: string, basicToken: string, zoomSecretToken: string, apiKey: string, apiSecret: string, hubspotService: HubspotService, s3Service: S3Service, reverseProxyUrl: string, zoomDsRepository: ZoomDsRepository, zoomMemberRepository: ZoomMemberRepository, zoomPhoneUserRepository: ZoomPhoneUserRepository, httpService: HttpService, logger: Logger);
+    handleRecordingCompleted(data: RecordingCompletedDto): Promise<void[] | {
+        plainToken: string;
+        encryptedToken: string;
+    }>;
+    deleteAllS3Object(bucketName: string, keyData: {
+        Key: string;
+    }[]): Promise<import("aws-sdk").AWSError | import("aws-sdk/clients/s3").DeleteObjectsOutput>;
+    deleteRecords(idsDelete: SchemaId[]): Promise<import("mongodb").UpdateResult>;
+    getZoomUserId(payload: RecordingCompletedPayloadObjectDto): Promise<string>;
+    getRecordingAudioUrl(id: string): string;
+    getContactInfo({ caller_number, callee_number, callee_name, caller_name, direction, }: {
+        caller_number: string;
+        callee_number: string;
+        callee_name: string;
+        caller_name: string;
+        direction: string;
+    }): {
+        number: string;
+        name: string;
+    };
+    private getCallLog;
+    downloadCall(id: string): Promise<string>;
+    private getCallLogById;
+    getCallLogByEmail(id: string, from: string, to: string, nextPageToken: string, page: number, perPage: number): Promise<CallLogResponse>;
+    private getUser;
+    getAuthToken(): Promise<ZoomAuthTypes>;
+    urlValidate(payload: RecordingCompletedDto): {
+        plainToken: string;
+        encryptedToken: string;
+    };
+    getDownloadUrls(recordings: RecordingCompletedPayloadObjectDto[]): string[];
+    buildDownloadUrl(zoomUrl: string): string;
+    handleZoomRecordingCompleted(data: ZoomRecordingObject): Promise<ZoomRecordingDocument>;
+    zoomMemberRecordAdd(zoomRecData: ZoomMemberDetails): Promise<ZoomMemberDocument>;
+    zoomPhoneUserAdd(zoomRecData: ZoomPhoneUserDetails): Promise<ZoomPhoneUserDocument>;
+    zoomMemberRecordUpdate(zoomRecData: ZoomMemberDetails): Promise<ZoomMemberDocument>;
+    zoomMemberRecordDelete(id: ZoomId): Promise<ZoomMemberDocument>;
+    getZoomVideoForDelete(): Promise<ZoomRecordingDocument[]>;
+    getZoomCloudVideoForDelete(): Promise<ZoomRecordingDocument[]>;
+    deleteRecordingInZoom(meetingUuid: string, id: SchemaId): Promise<any>;
+    generateZoomToken(): string;
+    private getCustomerName;
+    screenRecordingGetRecords(email: string, page: number, perPage: number, { topic, endDate, startDate }: ZoomMeetingFilter): Promise<PaginatorSchematicsInterface<ZoomRecordingDocument>>;
+    zoomMemberGetRecords(email: string): Promise<ZoomMemberDocument>;
+    screenRecordingPlayVideo(id: ZoomId): Promise<ZoomAwsSignedUrl>;
+    phoneCallZoomUser(email?: string): Promise<ZoomCoachType>;
+    getCallLogs(email: string, page: number, perPage: number, { endDate, startDate }: ZoomCallFilter, nextPageToken: string): Promise<PaginatorSchemaInterface<CallLogResponse>>;
+    getCoachesList(email?: string): Promise<ZoomCoachType>;
+    getAllMemberRecords(page: number, perPage: number): Promise<PaginatorSchematicsInterface<ZoomMemberDocument>>;
+}

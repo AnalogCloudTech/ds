@@ -1,0 +1,21 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.e2e.spec.ts"
+  ],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@/(.*)": "<rootDir>/../src/$1",
+    "@$": "<rootDir>/../src",
+    "filter2dbquery/(.*)": "<rootDir>/../libs/filter2dbquery/src/$1",
+    "filter2dbquery": "<rootDir>/../libs/filter2dbquery/src"
+  }
+}

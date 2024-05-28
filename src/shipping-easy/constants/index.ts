@@ -1,0 +1,4 @@
+export const SHIPPINGEASY_PROVIDER_NAME = 'HTTP_SHIPPING_EASY';
+export const SHIPPINGEASY_SECRET_KEY = 'SE_SECRET_KEY';
+export const SHIPPINGEASY_API_KEY = 'SE_API_KEY';
+export const AFY_ORDER_NUMBER = 'afy_order_number';
